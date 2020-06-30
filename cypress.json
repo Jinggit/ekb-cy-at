@@ -1,7 +1,9 @@
 {
     "baseUrl": "https://app.ekuaibao.com",
-    "defaultCommandTimeout": 30000,
+    "defaultCommandTimeout": 60000,
     "env": {},
+    "viewportWidth": 1024,
+    "viewportHeight": 768,
     "chromeWebSecurity": false,
     "requestTimeout": 30000,
     "pluginsFile": "cypress/plugins",

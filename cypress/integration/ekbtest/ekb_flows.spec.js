@@ -8,6 +8,9 @@
 import 'cypress-xpath';
 import * as rand from '../../utils/Rand';
 import { selectEnterprise } from './page_resources';
+import Header from '../pages/left_menu';
+import LeftMenu from '../pages/left_menu';
+import NewFlow from '../pages/flow_form';
 
 describe('单据测试', () => {
     beforeEach(() => {
@@ -19,11 +22,17 @@ describe('单据测试', () => {
         selectEnterprise();
         //workaround: refresh page to fix locale issue
         //cy.reload()
+        cy.waitLoadingMarkDisappear();
     });
 
-    //测试用例
+    //测试用例集合
+    //测试添加日常报销单-消费记录不为空
+    //测试添加日常报销单-消费记录为空
     testExpense();
+    //测试添加借款单-借款金额不为空
+    //测试添加借款单-借款金额为空
     testLoan();
+    //测试添加申请单-消费记录为空
     testApply();
 
     afterEach(() => {
@@ -35,8 +44,16 @@ describe('单据测试', () => {
 function testExpense() {
 
     it('测试添加日常报销单-消费记录不为空', () => {
+        //准备表单中的测试数据
         const title = 'cypress报销' + rand.makeid(5);
-        cy.get('[data-cy=bills-createBills]').click()
+        //进入我的单据页面
+        const leftmenu = new LeftMenu();
+        leftmenu.showMenu();
+        leftmenu.goToMy();
+        leftmenu.goToMyFlow();
+        //新建单据
+        const flow = leftmenu.createNewFlow()
+
         cy.contains('日常报销单').click();
         cy.waitLoadingMarkDisappear();
         cy.xpath('//*[@class="ant-input ant-input-lg"]').type(title);//*[@placeholder="请输入标题"]
