@@ -1,0 +1,17 @@
+{
+    "baseUrl": "https://app.ekuaibao.com",
+    "defaultCommandTimeout": 30000,
+    "env": {},
+    "chromeWebSecurity": false,
+    "requestTimeout": 30000,
+    "pluginsFile": "cypress/plugins",
+    "reporter": "mochawesome",
+    "reporterOptions": {
+        "reportDir": "cypress/report/mochawesome-report",
+        "overwrite": false,
+        "html": false,
+        "json": true,
+        "timestamp": "mmddyyyy_HHMMss"
+     },
+    "screenshotsFolder": "cypress/report/mochawesome-report/assets"
+  }
