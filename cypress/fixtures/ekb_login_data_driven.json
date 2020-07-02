@@ -1,0 +1,4 @@
+[
+  {"test_desc":"密码错误，失败", "areaCode": "86", "cellphone": "15710575586", "password": "1234567",  "expectedMessage": "错误"},
+  {"test_desc":"用户不存在，失败", "areaCode": "86", "cellphone": "15700000000", "password": "123456",  "expectedMessage": "用户名或密码错误"}
+]

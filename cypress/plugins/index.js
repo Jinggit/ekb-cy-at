@@ -13,24 +13,6 @@
 
 
 module.exports = (on, config) => {
-  on('before:browser:launch', (browser = {}, args) => {
-
-    if (browser.name === 'chrome') {
-      
-      // `args` is an araay of all the arguments
-      // that will be passed to Chrome when it launchers
-      args.push('--lang=zh')
-
-      // whatever you return here becomes the new args
-      return args
-    }
-
-    if (browser.name === 'electron') {
-      // `args` is a `BrowserWindow` options object
-      // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
-      args['fullscreen'] = false;
-      // whatever you return here becomes the new args
-      return args
-    }
-  })
-}
+    // `on` is used to hook into various events Cypress emits
+    // `config` is the resolved Cypress config
+  }

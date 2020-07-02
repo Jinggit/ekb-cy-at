@@ -1,11 +1,15 @@
 import 'cypress-xpath';
 import NewFlow from './flow_form';
 
+//左侧导航菜单页面
+
 class LeftMenu {
     showMenu() {
-        cy.get('#layout5-menu-wrap')
+        cy.xpath('//*[text()="随时随地记录每笔费用"]')
           .should('be.visible')
-        .click();
+        cy.xpath('//*[@class="layout5-menu-logo"]')
+          .should('be.visible')
+          .click();
     }
 
     goToMy() {
@@ -21,9 +25,9 @@ class LeftMenu {
     }
 
     createNewFlow(){
-        cy.xpath('//*[text()="新 建"]')
-        .should('be.visible')
-        .click();
+        cy.xpath('//*[@class="ant-btn header-action ant-btn-primary"]')
+          .should('be.visible')
+          .click();
 
         const flow = new NewFlow();
         return flow;

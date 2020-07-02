@@ -7,31 +7,32 @@
 //不需要UI登录进行单据页面的端到端测试
 import 'cypress-xpath';
 import * as rand from '../../utils/Rand';
-import { selectEnterprise } from './page_resources';
-import Header from '../pages/left_menu';
 import LeftMenu from '../pages/left_menu';
 import NewFlow from '../pages/flow_form';
+import SelectCorp from '../pages/select_corp';
 
 describe('单据测试', () => {
+
     beforeEach(() => {
         //通过API请求进行登录操作
         cy.clearCookies()
         cy.login({userType:"userA"})
           .chooseCorporation()
           .initLanguage()
-        selectEnterprise();
-        //workaround: refresh page to fix locale issue
-        //cy.reload()
-        cy.waitLoadingMarkDisappear();
+        //选择企业
+        const selectcorp = new SelectCorp();
+        selectcorp.selectEnterprise(Cypress.env('CORPNAME_USER_A'))
     });
 
     //测试用例集合
     //测试添加日常报销单-消费记录不为空
     //测试添加日常报销单-消费记录为空
     testExpense();
+
     //测试添加借款单-借款金额不为空
     //测试添加借款单-借款金额为空
     testLoan();
+
     //测试添加申请单-消费记录为空
     testApply();
 
@@ -43,41 +44,36 @@ describe('单据测试', () => {
 
 function testExpense() {
 
-    it('测试添加日常报销单-消费记录不为空', () => {
+    it('测试添加日常报销单-消费记录不为空', function()  {
         //准备表单中的测试数据
-        const title = 'cypress报销' + rand.makeid(5);
+        const title = 'cy报销' + rand.makeid(5);
+        const specification = 'cy日常报销单'
+
         //进入我的单据页面
         const leftmenu = new LeftMenu();
         leftmenu.showMenu();
         leftmenu.goToMy();
         leftmenu.goToMyFlow();
+        cy.waitLoadingMarkDisappear();
         //新建单据
-        const flow = leftmenu.createNewFlow()
+        const flow = leftmenu.createNewFlow();
+        //选择报销单
+        flow.chooseFlowSepcification(specification)
+        //请选择收款信息
+        flow.choosePayerInfo()
+        //请输入描述
+        flow.inputDesc()
+        //请输入标题
+        flow.inputTitle(title)
+        //添加费用明细
+        flow.addDetails()
+        //提交单据
+        flow.submitForm();
 
-        cy.contains('日常报销单').click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[@class="ant-input ant-input-lg"]').type(title);//*[@placeholder="请输入标题"]
-        cy.xpath('//*[@placeholder="请选择收款信息"]').click();
-        cy.xpath('//*[@class="ant-btn mr-10 ant-btn-primary ant-btn-lg"]').click();//确 认
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .should('be.visible')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
-          .type('QA{enter}');
-        cy.get('.import-detail').click();
-        cy.get('.type-name').click();
-        cy.contains('住宿').click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[contains(@class,"currency-money")]//input').type('158',{force: true});//*[@placeholder="请输入金额"]
-        cy.xpath('//*[@class="ant-btn btn-ml ant-btn-primary"]').click();
-        cy.contains('提 交').click();
-        cy.contains('继 续').click();
-        cy.contains('.modal-footer > .ant-btn-primary','提 交').click();
-        cy.contains('单据提交中').should('be.visible');
-        cy.contains('成功').should('be.visible');
+
     });
 
-    it('测试添加日常报销单-消费记录为空.', () => {
+    it('测试添加日常报销单-消费记录为空.', function() {
         const title = 'cypress报销' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click();
         cy.contains('日常报销单').click();
@@ -99,7 +95,7 @@ function testExpense() {
 
 function testLoan() {
 
-    it('测试添加借款单-借款金额不为空', () => {
+    it('测试添加借款单-借款金额不为空', function()  {
         const title = 'cypress借款' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click()
         cy.xpath('//*[text()="借款单"]').click();
@@ -117,7 +113,7 @@ function testLoan() {
         cy.contains('成功').should('be.visible');
     });
 
-    it('测试添加借款单-借款金额为空', () => {
+    it('测试添加借款单-借款金额为空', function()  {
         const title = 'cypress借款' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click();
         cy.xpath('//*[text()="借款单"]').click();
@@ -136,7 +132,7 @@ function testLoan() {
 
 function testApply() {
 
-    it('测试添加申请单-消费记录不为空', () => {
+    it('测试添加申请单-消费记录不为空', function()  {
         const title = 'cypress申请' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click()
         cy.xpath('//*[text()="申请单"]').click();
@@ -160,7 +156,7 @@ function testApply() {
         cy.contains('成功').should('be.visible');
     });
 
-    it('测试添加申请单-消费记录为空', () => {
+    it('测试添加申请单-消费记录为空', function()  {
         const title = 'cypress申请' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click();
         cy.xpath('//*[text()="申请单"]').click();

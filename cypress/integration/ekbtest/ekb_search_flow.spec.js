@@ -101,7 +101,7 @@ describe('测试单据查询', () => {
 
 function tests() {
 
-    it('测试单据查询', () => {
+    it('测试单据查询', function()  {
         findTemplate(title)
         cy.contains('.bill-name',title).click()
         cy.get('.label-template').should('be.visible')

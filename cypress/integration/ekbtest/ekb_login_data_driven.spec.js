@@ -10,6 +10,13 @@ import * as u  from '../../utils/utils';
 
 describe('通过UI操作登录测试', () => {
 
+   before(function() {
+     cy.fixture('ekb_login_data_driven').then(function(data){
+      this.testdata = data
+     })
+
+   });
+
     //测试前置处理部分
     beforeEach(() => {
         u.getNavigatorLanguages()
@@ -19,7 +26,10 @@ describe('通过UI操作登录测试', () => {
         cy.waitLoadingMarkDisappear();
     });
 
+
+    
     //测试用例描述部分
+
     tests();
 
     //测试后置处理部分
@@ -29,10 +39,23 @@ describe('通过UI操作登录测试', () => {
 });
 
 function tests() {
-  it('登录-数据驱动测试', () => {
+
+  it('登录-数据驱动测试-byFixtures', function() {
+    const testdatas = this.testdata
+    cy.wrap(testdatas)
+      .each(testdata => {
+        cy.log(testdata.test_desc)
+        cy.contains('Loading',{timeout: 10000}).should('not.be.visible')
+        loginWithPhone(testdata.areaCode, testdata.cellphone, testdata.password)
+        cy.contains(testdata.expectedMessage)
+        cy.reload()
+      })
+  })
+
+  it('登录-数据驱动测试', function() {
     const testdatas = [
-      {test_desc:'密码错误，失败', areaCode: '86', cellphone: '15710575586', password: '1234567',  expectedMessage: '错误'},
-      {test_desc:'用户不存在，失败', areaCode: '86', cellphone: '15700000000', password: '123456',  expectedMessage: '用户不存在'},
+      {"test_desc":"密码错误，失败", "areaCode": "86", "cellphone": "15710575586", "password": "1234567",  "expectedMessage": "错误"},
+      {"test_desc":"用户不存在，失败", "areaCode": "86", "cellphone": "15700000000", "password": "123456",  "expectedMessage": "用户名或密码错误"}
     ]
     cy.wrap(testdatas)
       .each(testdata => {
@@ -43,6 +66,8 @@ function tests() {
         cy.reload()
       })
   })
+
+
 
 
 }

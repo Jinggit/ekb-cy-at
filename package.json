@@ -1,11 +1,11 @@
 {
   "devDependencies": {
     "cypress": "^3.4.1",
-    "cypress-xpath": "^1.4.0",
+    "cypress-xpath": "^1.6.0",
     "ls": "^0.2.1",
-    "mocha": "^5.2.0",
+    "mocha": "^8.0.1",
     "mochawesome": "^4.1.0",
-    "mochawesome-merge": "^2.0.1",
+    "mochawesome-merge": "^4.1.0",
     "rimraf": "^2.6.3",
     "yargs": "^13.3.0"
   },
