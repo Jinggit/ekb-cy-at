@@ -1,10 +1,10 @@
-# cypress test framework
+# Cypress test framework
 
 
-## cypress command extended command library
+## Cypress command extended command library
     {HOME}\cypress-ekb-e2e\cypress\support
 
-## test case
+## Test case
     The unit test case corresponding to the command extension command
     {HOME}\cypress-ekb-e2e\cypress\integration\commandtest
     e2e test case
@@ -21,10 +21,10 @@
 ## Execute e2e test cases
     node cypress_runner -b electron -s ekb_*.spec.js
 
-## testing report
+## Testing report
     {HOME}\cypress-ekb-e2e\cypress\report\mochawesome-report\mochawesome.html
 
-## error screenshot
+## Error screenshot
     {HOME}\cypress-ekb-e2e\cypress\screenshots
 
 ## Video Recording
