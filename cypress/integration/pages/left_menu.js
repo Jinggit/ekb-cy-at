@@ -1,11 +1,11 @@
 import 'cypress-xpath';
 import NewFlow from './flow_form';
 
-//左侧导航菜单页面
+//lefe side menu
 
 class LeftMenu {
     showMenu() {
-        cy.xpath('//*[text()="随时随地记录每笔费用"]')
+        cy.xpath('//*[text()="Log your each consumption here."]')
           .should('be.visible')
         cy.xpath('//*[@class="layout5-menu-logo"]')
           .should('be.visible')
@@ -13,13 +13,13 @@ class LeftMenu {
     }
 
     goToMy() {
-        cy.xpath('//*[text()="我的"]')
+        cy.xpath('//*[text()="Me"]')
           .should('be.visible')
           .click();
     }
 
     goToMyFlow() {
-        cy.xpath('//*[text()="我的单据"]')
+        cy.xpath('//*[text()="My Invoice"]')
           .should('be.visible')
           .click();
     }
