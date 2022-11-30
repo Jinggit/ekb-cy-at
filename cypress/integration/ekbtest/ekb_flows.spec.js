@@ -51,12 +51,12 @@ function testExpense() {
 
         //Enter my document page
         const leftmenu = new LeftMenu();
-        leftmenu. showMenu();
-        leftmenu. goToMy();
+        leftmenu.showMenu();
+        leftmenu.goToMy();
         leftmenu.goToMyFlow();
         cy. waitLoadingMarkDisappear();
         //New document
-        const flow = leftmenu. createNewFlow();
+        const flow = leftmenu.createNewFlow();
         // select reimbursement form
         flow.chooseFlowSepcification(specification)
         //Please select payment information
