@@ -1,92 +1,92 @@
-// ***********************************************************
-//编写历史
-//创建者
-//更改者
-//版本
-// ***********************************************************
-//不需要UI登录进行单据页面的端到端测试
+// *************************************************** ************
+//history
+//Author
+//editor
+//Version
+// *************************************************** ************
+//Do not need UI login for end-to-end test of document page
 import 'cypress-xpath';
 import * as rand from '../../utils/Rand';
 import LeftMenu from '../pages/left_menu';
 import NewFlow from '../pages/flow_form';
 import SelectCorp from '../pages/select_corp';
 
-describe('单据测试', () => {
+describe('document test', () => {
 
     beforeEach(() => {
-        //通过API请求进行登录操作
-        cy.clearCookies()
-        cy.login({userType:"userA"})
+        //Login operation through API request
+        cy. clearCookies()
+        cy.login({userType: "userA"})
           .chooseCorporation()
           .initLanguage()
-        //选择企业
+        //select company
         const selectcorp = new SelectCorp();
         selectcorp.selectEnterprise(Cypress.env('CORPNAME_USER_A'))
     });
 
-    //测试用例集合
-    //测试添加日常报销单-消费记录不为空
-    //测试添加日常报销单-消费记录为空
+    // collection of test cases
+    //Test to add daily reimbursement form - the consumption record is not empty
+    //Test to add a daily reimbursement form - the consumption record is empty
     testExpense();
 
-    //测试添加借款单-借款金额不为空
-    //测试添加借款单-借款金额为空
+    //Test to add a loan slip - the loan amount is not empty
+    //Test to add a loan slip - the loan amount is empty
     testLoan();
 
-    //测试添加申请单-消费记录为空
+    //Test to add application form - consumption record is empty
     testApply();
 
     afterEach(() => {
-        //通过API请求进行退出操作
-        cy.logout();
+        //Exit operation through API request
+        cy. logout();
     });
 });
 
 function testExpense() {
 
-    it('测试添加日常报销单-消费记录不为空', function()  {
-        //准备表单中的测试数据
-        const title = 'cy报销' + rand.makeid(5);
-        const specification = 'cy日常报销单'
+    it('Test to add daily reimbursement form - the consumption record is not empty', function() {
+        // Prepare the test data in the form
+        const title = 'cy reimbursement' + rand.makeid(5);
+        const specification = 'cy daily reimbursement form'
 
-        //进入我的单据页面
+        //Enter my document page
         const leftmenu = new LeftMenu();
-        leftmenu.showMenu();
-        leftmenu.goToMy();
+        leftmenu. showMenu();
+        leftmenu. goToMy();
         leftmenu.goToMyFlow();
-        cy.waitLoadingMarkDisappear();
-        //新建单据
-        const flow = leftmenu.createNewFlow();
-        //选择报销单
+        cy. waitLoadingMarkDisappear();
+        //New document
+        const flow = leftmenu. createNewFlow();
+        // select reimbursement form
         flow.chooseFlowSepcification(specification)
-        //请选择收款信息
+        //Please select payment information
         flow.choosePayerInfo()
-        //请输入描述
-        flow.inputDesc()
-        //请输入标题
-        flow.inputTitle(title)
-        //添加费用明细
-        flow.addDetails()
-        //提交单据
-        flow.submitForm();
+        //Please enter a description
+        flow. inputDesc()
+        //Please enter a title
+        flow. inputTitle(title)
+        //Add fee details
+        flow. addDetails()
+        //Submit documents
+        flow. submitForm();
 
 
     });
 
-    it('测试添加日常报销单-消费记录为空.', function() {
-        const title = 'cypress报销' + rand.makeid(5);
+    it('Test to add daily reimbursement form - the consumption record is empty.', function() {
+        const title = 'cypress reimbursement' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click();
-        cy.contains('日常报销单').click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[@class="ant-input ant-input-lg"]').type(title);//*[@placeholder="请输入标题"]
-        cy.xpath('//*[@placeholder="请选择收款信息"]').click();
-        cy.xpath('//*[@class="ant-btn mr-10 ant-btn-primary ant-btn-lg"]').click();//确 认
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
+        cy.contains('daily reimbursement form').click();
+        cy. waitLoadingMarkDisappear();
+        cy.xpath('//*[@class="ant-input ant-input-lg"]').type(title);//*[@placeholder="Please enter the title"]
+        cy.xpath('//*[@placeholder="Please select payment information"]').click();
+        cy.xpath('//*[@class="ant-btn mr-10 ant-btn-primary ant-btn-lg"]').click();//Confirm
+        cy.xpath('//*[@placeholder="(optional) please enter a description"]')
+          .type('Jing Guanhua{enter}')
+          .type('Hesi{enter}')
           .type('QA{enter}');
-        cy.contains('提 交').click();
-        cy.contains('消费记录不能为空').should('be.visible');
+        cy.contains('submit').click();
+        cy.contains('Consumption records cannot be empty').should('be.visible');
     });
 
 
@@ -95,80 +95,80 @@ function testExpense() {
 
 function testLoan() {
 
-    it('测试添加借款单-借款金额不为空', function()  {
-        const title = 'cypress借款' + rand.makeid(5);
+    it('Test to add a loan slip - the loan amount is not empty', function() {
+        const title = 'cypress loan' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click()
-        cy.xpath('//*[text()="借款单"]').click();
-        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^借款单$/).click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[@placeholder="请输入标题"]').type(title);
-        cy.xpath('//*[contains(@class,"currency-money")]//input').type('158',{force: true});//*[@placeholder="请输入金额"]
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
+        cy.xpath('//*[text()="Loan slip"]').click();
+        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^Debit $/).click ();
+        cy. waitLoadingMarkDisappear();
+        cy.xpath('//*[@placeholder="Please enter the title"]').type(title);
+        cy.xpath('//*[contains(@class,"currency-money")]//input').type('158',{force: true});//*[@placeholder="Please enter Amount"]
+        cy.xpath('//*[@placeholder="(optional) please enter a description"]')
+          .type('Jing Guanhua{enter}')
+          .type('Hesi{enter}')
           .type('QA{enter}');
-        cy.contains('提 交').click();
-        cy.contains('.modal-footer > .ant-btn-primary','提 交').click();
-        cy.contains('单据提交中').should('be.visible');
-        cy.contains('成功').should('be.visible');
+        cy.contains('submit').click();
+        cy.contains('.modal-footer > .ant-btn-primary', 'submit').click();
+        cy.contains('document submission').should('be.visible');
+        cy.contains('success').should('be.visible');
     });
 
-    it('测试添加借款单-借款金额为空', function()  {
-        const title = 'cypress借款' + rand.makeid(5);
+    it('Test to add a loan note - the loan amount is empty', function() {
+        const title = 'cypress loan' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click();
-        cy.xpath('//*[text()="借款单"]').click();
-        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^借款单$/).click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[@placeholder="请输入标题"]').type(title);
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
+        cy.xpath('//*[text()="Loan slip"]').click();
+        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^Debit $/).click ();
+        cy. waitLoadingMarkDisappear();
+        cy.xpath('//*[@placeholder="Please enter the title"]').type(title);
+        cy.xpath('//*[@placeholder="(optional) please enter a description"]')
+          .type('Jing Guanhua{enter}')
+          .type('Hesi{enter}')
           .type('QA{enter}');
-        cy.contains('提 交').click();
-        cy.contains('借款金额不能为空').should('be.visible');
+        cy.contains('submit').click();
+        cy.contains('The loan amount cannot be empty').should('be.visible');
     });
 
 }
 
 function testApply() {
 
-    it('测试添加申请单-消费记录不为空', function()  {
-        const title = 'cypress申请' + rand.makeid(5);
+    it('Test to add application form - consumption record is not empty', function() {
+        const title = 'cypress application' + rand.makeid(5);
         cy.get('[data-cy=bills-createBills]').click()
-        cy.xpath('//*[text()="申请单"]').click();
-        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^申请单$/).click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[@placeholder="请输入标题"]').type(title);
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
+        cy.xpath('//*[text()="application form"]').click();
+        //cy.xpath('//*[@class="modal-content-new"]/div/div/div[@class="children"]').contains(/^application $/).click ();
+        cy. waitLoadingMarkDisappear();
+        cy.xpath('//*[@placeholder="Please enter the title"]').type(title);
+        cy.xpath('//*[@placeholder="(optional) please enter a description"]')
+          .type('Jing Guanhua{enter}')
+          .type('Hesi{enter}')
           .type('QA{enter}');
         cy.get('.import-detail').click();
         cy.get('.type-name').click();
-        cy.contains('通讯').click();
-        cy.waitLoadingMarkDisappear();
-        cy.xpath('//*[contains(@class,"currency-money")]//input').type('158',{force: true});//*[@placeholder="请输入金额"]
-        cy.contains('.ant-btn-primary','保 存').click();
-        cy.contains('提 交').click();
-        cy.contains('.modal-footer > .ant-btn-primary','提 交').click();
-        cy.contains('单据提交中').should('be.visible');
+        cy.contains('Communication').click();
+        cy. waitLoadingMarkDisappear();
+        cy.xpath('//*[contains(@class,"currency-money")]//input').type('158',{force: true});//*[@placeholder="Please enter Amount"]
+        cy.contains('.ant-btn-primary', 'Save').click();
+        cy.contains('submit').click();
+        cy.contains('.modal-footer > .ant-btn-primary', 'submit').click();
+        cy.contains('document submission').should('be.visible');
         cy.xpath('//*[@class="followWeChat-footer"]/*[@class="ant-btn ant-btn-primary"]').click();
-        cy.contains('成功').should('be.visible');
+        cy.contains('success').should('be.visible');
     });
 
-    it('测试添加申请单-消费记录为空', function()  {
-        const title = 'cypress申请' + rand.makeid(5);
-        cy.get('[data-cy=bills-createBills]').click();
-        cy.xpath('//*[text()="申请单"]').click();
-        //cy.get('.children').contains(/^申请单$/).click();
-        cy.xpath('//*[@placeholder="（选填）请输入描述"]')
-          .type('景冠华{enter}')
-          .type('合思{enter}')
-          .type('QA{enter}');
-          cy.xpath('//*[@placeholder="请输入标题"]').type(title);
-        cy.contains('提 交').click();
-        cy.contains('消费记录不能为空').should('be.visible');
-    });
+   it('Test to add application form - consumption record is empty', function() {
+         const title = 'cypress application' + rand.makeid(5);
+         cy.get('[data-cy=bills-createBills]').click();
+         cy.xpath('//*[text()="application form"]').click();
+         //cy.get('.children').contains(/^application $/).click();
+         cy.xpath('//*[@placeholder="(optional) please enter a description"]')
+           .type('Jing Guanhua{enter}')
+           .type('Hesi{enter}')
+           .type('QA{enter}');
+           cy.xpath('//*[@placeholder="Please enter the title"]').type(title);
+         cy.contains('submit').click();
+         cy.contains('Consumption records cannot be empty').should('be.visible');
+     });
 
 }
 
